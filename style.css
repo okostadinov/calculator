@@ -1,0 +1,58 @@
+html {
+    background-color: #9c728a;
+}
+
+#container {
+    margin: 80px auto;
+    width: 450px;
+    height: 500px;
+    border: 3px solid #777;
+    border-radius: 30px;
+    background-color: #aaa;
+    box-shadow: 3px 3px 5px 5px #665270;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    gap: 5px;
+    grid-auto-rows: 100px;
+    padding: 10px;
+}
+
+#fldDisplay {
+    grid-row: 1 / 2;
+    grid-column: 1 / 6;
+    background-color: #ddd;
+    border-radius: 20px;
+    border: 1px solid #777;
+    box-shadow: 0 0 5px 5px #888;
+    display: flex;
+    justify-content: flex-end;
+    align-content: center;
+    padding: 10%;
+}
+
+.btn, .btn-number, .btn-symbol, #btnClear, #btnEqual {
+    color: white;
+    border-radius: 20px;
+}
+
+#btnClear {
+    background-color: #5a0e0e;
+}
+
+#btnEqual {
+    background-color: #421828;
+}
+
+.btn, .btn-symbol {
+    background-color: #777;
+}
+
+.btn-number {
+    background-color: #555;
+}
+
+.btn:hover, .btn-number:hover, .btn-symbol:hover, #btnClear:hover {
+    cursor: pointer;
+    box-shadow: 0 0 2px 1px #555;
+}
