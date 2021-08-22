@@ -1,15 +1,15 @@
 /******************/
 /* Math functions */
 /******************/
-const add = (x, y) => x + y;
+const add = (x, y) => +x + +y;
 
-const substract = (x, y) => x - y;
+const substract = (x, y) => +x - +y;
 
-const multiply = (x, y) => x * y;
+const multiply = (x, y) => +x * +y;
 
-const divide = (x, y) => x / y;
+const divide = (x, y) => +x / +y;
 
-const power = (x, y) => x ** y;
+const power = (x, y) => Math.pow(+x, +y);
 
 const operate = function(x, operator, y) {
     switch (operator) {
@@ -25,7 +25,7 @@ const operate = function(x, operator, y) {
         case '/':
             return divide(x, y);
             break;
-        case '**':
+        case '^':
             return power(x, y);
             break;
         default:
@@ -138,7 +138,7 @@ const calculateInput = function() {
     while (counter < stringInput.length - 2) {
         operator = stringInput[counter+1];
         y = stringInput[counter+2];
-        if (checkZeroDivision) {
+        if (checkZeroDivision()) {
             x = 'Illegal operation';
             break;
         }
