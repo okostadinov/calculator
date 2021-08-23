@@ -1,5 +1,6 @@
 html {
     background-color: #9c728a;
+    font-size:larger;
 }
 
 #container {
@@ -25,13 +26,17 @@ html {
     border-radius: 20px;
     border: 1px solid #777;
     box-shadow: 0 0 5px 5px #888;
+    height: 20px;
     display: flex;
     justify-content: flex-end;
     align-content: center;
     padding: 10%;
 }
 
-.btn, .btn-number, .btn-symbol, #btnClear, #btnEqual {
+.btn, .btn-number, 
+.btn-symbol, #btnClear, 
+#btnEqual, #btnDelete {
+    font-size: large;
     color: white;
     border-radius: 20px;
 }
@@ -41,7 +46,11 @@ html {
 }
 
 #btnEqual {
-    background-color: #421828;
+    background-color: #241b1e;
+}
+
+#btnDelete {
+    background-color: rgb(36, 26, 71);
 }
 
 .btn, .btn-symbol {
@@ -52,7 +61,10 @@ html {
     background-color: #555;
 }
 
-.btn:hover, .btn-number:hover, .btn-symbol:hover, #btnClear:hover {
+.btn:hover, .btn-number:hover, 
+.btn-symbol:hover, #btnClear:hover, 
+#btnEqual:hover, #btnDelete:hover {
     cursor: pointer;
     box-shadow: 0 0 2px 1px #555;
+    filter: brightness(0.90);
 }

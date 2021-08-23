@@ -1,6 +1,7 @@
-/******************/
-/* Math functions */
-/******************/
+    /******************/
+    /* Math functions */
+    /******************/
+
 const add = (x, y) => +x + +y;
 
 const substract = (x, y) => +x - +y;
@@ -34,9 +35,11 @@ const operate = function(x, operator, y) {
     }
 }
 
-/*************************/
-/* Initializer functions */
-/*************************/
+
+    /*************************/
+    /* Initializer functions */
+    /*************************/
+
 const addNumberBtns = function() {
     for (let i = 0; i < 10; i++) {
         const btnNumber = document.createElement('button');
@@ -59,7 +62,7 @@ const addClearBtn = function() {
     btnClear.textContent = 'C';
     btnClear.setAttribute('id', 'btnClear');
     btnClear.setAttribute('style', 'grid-row: 2 / 3; grid-column: 5 / 6');
-    btnClear.addEventListener('click', clearfldDisplay)
+    btnClear.addEventListener('click', clearFldDisplay)
     container.appendChild(btnClear);
 }
 
@@ -108,54 +111,116 @@ const addEqualBtn = function() {
     container.appendChild(btnEqual);
 }
 
-/*  Extracts the clicked number
- *  and adds it to the display div.
- */
+const addFloatBtn = function() {
+    const btnFloat = document.createElement('button');
+    btnFloat.textContent = '.';
+    btnFloat.classList.add('btn-symbol');
+    btnFloat.setAttribute('style', 'grid-row: 5 / 6; grid-column: 3 / 4');
+    btnFloat.addEventListener('click', enterFloatPoint);
+    container.appendChild(btnFloat);
+}
+
+const addDeleteBtn = function() {
+    const btnDelete = document.createElement('button');
+    btnDelete.textContent = 'D';
+    btnDelete.setAttribute('id', 'btnDelete');
+    btnDelete.setAttribute('style', 'grid-row: 5 / 6; grid-column: 1 / 2');
+    btnDelete.addEventListener('click', deleteLatest)
+    container.appendChild(btnDelete);
+}
+
+
+    /********************/
+    /* Helper functions */
+    /********************/
+
+/* Extracts the value of the clicked number button. */
 const enterNumber = (e) => {
+    deleteIllegalOperationNotification();
     fldDisplay.textContent += e.target.textContent;
 }
 
-/*  Removes any input/output
- *  displayed on the text div.
- */
-const clearfldDisplay = () => fldDisplay.textContent = '';
+/* Applied when the user press 'C' button. */
+const clearFldDisplay = () => fldDisplay.textContent = '';
 
-/*  Extract the clicked symbol
- *  and adds it to the display div.
+/* Does not allow the user to enter a symbol
+ * in case the display field is empty or
+ * the last item in the string array is not a number.
  */
 const enterSymbol = (e) => {
+    deleteIllegalOperationNotification();
     if (!fldDisplay.textContent) return;
-    if (checkInput()) return;
+    if (!isCorrectInput()) return;
     fldDisplay.textContent += ' ' + e.target.textContent + ' ';
 }
 
-const calculateInput = function() {
-    if (checkInput()) return;
+/* Ensure user has began entering a number
+ * and that only one floating point is added.
+ */
+const enterFloatPoint = () => {
+    deleteIllegalOperationNotification();
+    if (!fldDisplay.textContent) return;
+    if (!isCorrectInput()) return;
     let stringInput = fldDisplay.textContent.split(" ");
-    let x = stringInput[0];
+    let latestNumber = stringInput[stringInput.length - 1];
+    if (latestNumber % 1 !== 0) return;
+    fldDisplay.textContent += '.'; 
+}
+
+const calculateInput = function() {
+    if (!isCorrectInput()) return;
+    // Remove whitespace and convert to array
+    let stringInput = fldDisplay.textContent.split(" ");
+    let x = stringInput[0]; // Take the first value
     let y, operator;
-    let counter = 0;
+    let counter = 0; // Keep track of the array
+
+    // Since the y-value will be 2 spaces ahead of x,
+    // we know that once we have reached the third to last
+    // index in the array, we should not continue.
     while (counter < stringInput.length - 2) {
         operator = stringInput[counter+1];
-        y = stringInput[counter+2];
-        if (checkZeroDivision()) {
+        y = stringInput[counter+2]; // Take the second value
+        if (isZeroDivision(operator, y)) {
             x = 'Illegal operation';
             break;
         }
-        x = operate(x, operator, y);
-        counter += 2;
+        // Update the x-value with the result
+        x = +operate(x, operator, y).toFixed(5);
+        counter += 2; // Skip the operator string
     }
     fldDisplay.textContent = x;
 }
 
-const checkInput = function() {
-    let stringInput = fldDisplay.textContent.split(" ");
-    return (stringInput[stringInput.length - 1] === '');
-    //console.log(+stringInput[stringInput.length - 1]);
-    //console.log((Number.isNaN(stringInput[stringInput.length - 1])));
+/* If an operator is to be deleted,
+ * ensures that leading and trailing whitespace is removed,
+ * otherwise removes only the last char (i.e. a number).
+ */
+const deleteLatest = () => {
+    if (fldDisplay.textContent.charAt(fldDisplay.textContent.length - 1) === ' ') {
+    fldDisplay.textContent = fldDisplay.textContent.slice(0, -3);
+    } else {
+        fldDisplay.textContent = fldDisplay.textContent.slice(0, -1);
+    }
 }
 
-const checkZeroDivision = (operator, y) => operator === '/' && y === 0; 
+/* Last item in the string array mustn't be a symbol or a float point. */
+const isCorrectInput = function() {
+    let stringInput = fldDisplay.textContent.split(" ");
+    let lastItem = stringInput[stringInput.length - 1];
+    if (lastItem === '' || lastItem[lastItem.length - 1] === '.') return false;
+    return true;
+}
+
+const deleteIllegalOperationNotification = () => 
+    (fldDisplay.textContent === 'Illegal operation') ? clearFldDisplay() : null;
+
+const isZeroDivision = (operator, y) => operator === '/' && y == 0; 
+    
+
+    /****************/
+    /***** Main *****/
+    /****************/
 
 const container = document.querySelector('#container');
 
@@ -167,3 +232,5 @@ addNumberBtns();
 addClearBtn();
 addSymbolBtns();
 addEqualBtn();
+addFloatBtn();
+addDeleteBtn();

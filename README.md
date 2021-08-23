@@ -1,3 +1,4 @@
-## Basic calculator supporting main operations
+## Calculator
+Supports floating point numbers, main operations and (partial) deleting of input.
 
-#### More features to be added, s.a. operating with decimals, percent, square root
+#### Live version: 
