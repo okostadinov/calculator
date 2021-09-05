@@ -98,7 +98,6 @@ const addSymbolBtns = function() {
     container.appendChild(btnDivide);
 
     let btnsSymbol = Array.from(document.querySelectorAll('.btn-symbol'));
-    console.log(btnsSymbol);
     btnsSymbol.forEach(btn => btn.addEventListener('click', enterSymbol));
 }
 
