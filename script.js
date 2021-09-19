@@ -1,41 +1,3 @@
-    /******************/
-    /* Math functions */
-    /******************/
-
-const add = (x, y) => +x + +y;
-
-const substract = (x, y) => +x - +y;
-
-const multiply = (x, y) => +x * +y;
-
-const divide = (x, y) => +x / +y;
-
-const power = (x, y) => Math.pow(+x, +y);
-
-const operate = function(x, operator, y) {
-    switch (operator) {
-        case '+':
-            return add(x, y);
-            break;
-        case '-':
-            return substract(x, y);
-            break;
-        case '*':
-            return multiply(x, y);
-            break;
-        case '/':
-            return divide(x, y);
-            break;
-        case '^':
-            return power(x, y);
-            break;
-        default:
-            return;
-            break;
-    }
-}
-
-
     /*************************/
     /* Initializer functions */
     /*************************/
@@ -215,8 +177,38 @@ const deleteIllegalOperationNotification = () =>
     (fldDisplay.textContent === 'Illegal operation') ? clearFldDisplay() : null;
 
 const isZeroDivision = (operator, y) => operator === '/' && y == 0; 
-    
 
+    /******************/
+    /* Math functions */
+    /******************/
+
+    const add = (x, y) => +x + +y;
+
+    const substract = (x, y) => +x - +y;
+    
+    const multiply = (x, y) => +x * +y;
+    
+    const divide = (x, y) => +x / +y;
+    
+    const power = (x, y) => Math.pow(+x, +y);
+    
+    const operate = function(x, operator, y) {
+        switch (operator) {
+            case '+':
+                return add(x, y);
+            case '-':
+                return substract(x, y);
+            case '*':
+                return multiply(x, y);
+            case '/':
+                return divide(x, y);
+            case '^':
+                return power(x, y);
+            default:
+                return;
+        }
+    }
+    
     /****************/
     /***** Main *****/
     /****************/
