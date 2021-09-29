@@ -2,7 +2,7 @@
     /* Initializer functions */
     /*************************/
 
-const addNumberBtns = function() {
+const addNumberBtns = function(container) {
     for (let i = 0; i < 10; i++) {
         const btnNumber = document.createElement('button');
         btnNumber.textContent = i;
@@ -15,6 +15,7 @@ const addNumberBtns = function() {
             btnNumber.setAttribute('style', `grid-row: auto; grid-column: 3 / 4`);
         }
         btnNumber.addEventListener('click', enterNumber);
+
         container.appendChild(btnNumber);
     }
 }
@@ -25,10 +26,11 @@ const addClearBtn = function() {
     btnClear.setAttribute('id', 'btnClear');
     btnClear.setAttribute('style', 'grid-row: 2 / 3; grid-column: 5 / 6');
     btnClear.addEventListener('click', clearFldDisplay)
-    container.appendChild(btnClear);
+
+    return btnClear;
 }
 
-const addSymbolBtns = function() {
+const addSymbolBtns = function(container) {    
     const btnPower = document.createElement('button');
     btnPower.textContent = '^';
     btnPower.classList.add('btn-symbol');
@@ -58,9 +60,6 @@ const addSymbolBtns = function() {
     btnDivide.classList.add('btn-symbol');
     btnDivide.setAttribute('style', 'grid-row: 3 / 4; grid-column: 5 / 6');
     container.appendChild(btnDivide);
-
-    let btnsSymbol = Array.from(document.querySelectorAll('.btn-symbol'));
-    btnsSymbol.forEach(btn => btn.addEventListener('click', enterSymbol));
 }
 
 const addEqualBtn = function() {
@@ -69,7 +68,8 @@ const addEqualBtn = function() {
     btnEqual.setAttribute('id', 'btnEqual');
     btnEqual.setAttribute('style', 'grid-row: 5 / 6; grid-column: 4 / 6');
     btnEqual.addEventListener('click', calculateInput);
-    container.appendChild(btnEqual);
+
+    return btnEqual;
 }
 
 const addFloatBtn = function() {
@@ -78,7 +78,8 @@ const addFloatBtn = function() {
     btnFloat.classList.add('btn-symbol');
     btnFloat.setAttribute('style', 'grid-row: 5 / 6; grid-column: 3 / 4');
     btnFloat.addEventListener('click', enterFloatPoint);
-    container.appendChild(btnFloat);
+
+    return btnFloat;
 }
 
 const addDeleteBtn = function() {
@@ -87,7 +88,8 @@ const addDeleteBtn = function() {
     btnDelete.setAttribute('id', 'btnDelete');
     btnDelete.setAttribute('style', 'grid-row: 5 / 6; grid-column: 1 / 2');
     btnDelete.addEventListener('click', deleteLatest)
-    container.appendChild(btnDelete);
+    
+    return btnDelete;
 }
 
 
@@ -95,8 +97,13 @@ const addDeleteBtn = function() {
     /* Helper functions */
     /********************/
 
+const checkOverflow = () => {
+    return fldDisplay.textContent.length >= 25;
+}
+
 /* Extracts the value of the clicked number button. */
 const enterNumber = (e) => {
+    if (checkOverflow()) { return; }
     deleteIllegalOperationNotification();
     fldDisplay.textContent += e.target.textContent;
 }
@@ -109,9 +116,10 @@ const clearFldDisplay = () => fldDisplay.textContent = '';
  * the last item in the string array is not a number.
  */
 const enterSymbol = (e) => {
+    if (checkOverflow()) { return; }
     deleteIllegalOperationNotification();
-    if (!fldDisplay.textContent) return;
-    if (!isCorrectInput()) return;
+    if (!fldDisplay.textContent) { return; }
+    if (!isCorrectInput()) { return; }
     fldDisplay.textContent += ' ' + e.target.textContent + ' ';
 }
 
@@ -119,12 +127,13 @@ const enterSymbol = (e) => {
  * and that only one floating point is added.
  */
 const enterFloatPoint = () => {
+    if (checkOverflow()) { return; }
     deleteIllegalOperationNotification();
-    if (!fldDisplay.textContent) return;
-    if (!isCorrectInput()) return;
+    if (!fldDisplay.textContent) { return; }
+    if (!isCorrectInput()) { return; }
     let stringInput = fldDisplay.textContent.split(" ");
     let latestNumber = stringInput[stringInput.length - 1];
-    if (latestNumber % 1 !== 0) return;
+    if (latestNumber % 1 !== 0) { return; }
     fldDisplay.textContent += '.'; 
 }
 
@@ -215,13 +224,23 @@ const isZeroDivision = (operator, y) => operator === '/' && y == 0;
 
 const container = document.querySelector('#container');
 
+const calc = document.createElement("div");
+calc.classList.add("calculator");
+
 const fldDisplay = document.createElement('div');
 fldDisplay.setAttribute('id', 'fldDisplay');
-container.appendChild(fldDisplay);
 
-addNumberBtns();
-addClearBtn();
-addSymbolBtns();
-addEqualBtn();
-addFloatBtn();
-addDeleteBtn();
+calc.appendChild(fldDisplay);
+calc.appendChild(addDeleteBtn());
+calc.appendChild(addClearBtn());
+calc.appendChild(addEqualBtn());
+calc.appendChild(addFloatBtn());
+addNumberBtns(calc);
+addSymbolBtns(calc);
+
+container.appendChild(calc);
+
+(function() {
+    const btnsSymbol = Array.from(document.querySelectorAll('.btn-symbol'));    
+    btnsSymbol.forEach(btn => btn.addEventListener('click', enterSymbol));
+})();
