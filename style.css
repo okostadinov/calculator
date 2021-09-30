@@ -74,10 +74,9 @@ html, body {
     filter: brightness(0.90);
 }
 
-@media (max-width: 500px) {
+@media (max-width: 450px) {
     .calculator {
-        width: max-content;
-        height: 60vh;
+        width: 90vw;
     }
 
     .btn, .btn-number, 
